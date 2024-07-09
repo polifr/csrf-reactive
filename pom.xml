@@ -75,24 +75,33 @@
         <version>2.43.0</version>
         <executions>
           <execution>
-            <id>apply</id>
+            <id>apply-pom</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <configuration>
+              <pom>
+                <sortPom />
+              </pom>
+            </configuration>
+          </execution>
+          <execution>
+            <id>apply-java</id>
             <phase>process-sources</phase>
             <goals>
               <goal>apply</goal>
             </goals>
+            <configuration>
+              <java>
+                <importOrder />
+                <removeUnusedImports />
+                <googleJavaFormat />
+                <endWithNewline />
+              </java>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <java>
-            <importOrder />
-            <removeUnusedImports />
-            <googleJavaFormat />
-            <endWithNewline />
-          </java>
-          <pom>
-            <sortPom />
-          </pom>
-        </configuration>
       </plugin>
     </plugins>
   </build>
