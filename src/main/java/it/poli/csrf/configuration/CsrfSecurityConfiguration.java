@@ -1,6 +1,9 @@
 package it.poli.csrf.configuration;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
+import org.springframework.boot.actuate.logging.LoggersEndpoint;
+import org.springframework.boot.actuate.metrics.MetricsEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -17,6 +20,13 @@ public class CsrfSecurityConfiguration {
 
   @Bean
   SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+    log.debug("Spring actuator endpoints - no filtering");
+    http.authorizeExchange(
+        authorize ->
+            authorize
+                .matchers(EndpointRequest.to(LoggersEndpoint.class, MetricsEndpoint.class))
+                .permitAll());
+
     log.debug("Csrf is enabled");
     http.csrf(
         csrf -> csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()));
