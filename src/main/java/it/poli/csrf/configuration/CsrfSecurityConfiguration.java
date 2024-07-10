@@ -13,10 +13,11 @@ import org.springframework.security.web.server.csrf.CookieServerCsrfTokenReposit
 @EnableWebFluxSecurity
 public class CsrfSecurityConfiguration {
 
-	@Bean
-	SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		http.csrf(csrf -> csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()));
-		
-		return http.build();
-	}
+  @Bean
+  SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+    http.csrf(
+        csrf -> csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()));
+
+    return http.build();
+  }
 }

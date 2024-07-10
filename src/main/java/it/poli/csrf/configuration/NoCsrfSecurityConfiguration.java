@@ -13,10 +13,10 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class NoCsrfSecurityConfiguration {
 
-	@Bean
-	SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		http.csrf(CsrfSpec::disable);
-		
-		return http.build();
-	}
+  @Bean
+  SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+    http.csrf(CsrfSpec::disable);
+
+    return http.build();
+  }
 }
