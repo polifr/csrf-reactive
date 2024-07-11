@@ -2,8 +2,11 @@ package it.poli.csrf.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.boot.actuate.logging.LoggersEndpoint;
 import org.springframework.boot.actuate.metrics.MetricsEndpoint;
+import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusScrapeEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -22,9 +25,15 @@ public class NoCsrfSecurityConfiguration {
   SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
     log.debug("Spring actuator endpoints - no filtering");
     http.authorizeExchange(
-        authorize ->
-            authorize
-                .matchers(EndpointRequest.to(LoggersEndpoint.class, MetricsEndpoint.class))
+        exchange ->
+            exchange
+                .matchers(
+                    EndpointRequest.to(
+                        HealthEndpoint.class,
+                        InfoEndpoint.class,
+                        LoggersEndpoint.class,
+                        MetricsEndpoint.class,
+                        PrometheusScrapeEndpoint.class))
                 .permitAll());
 
     log.debug("Csrf is not enabled");

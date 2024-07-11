@@ -5,11 +5,32 @@ spring:
     banner-mode: off
 
 management:
+  tracing:
+    enabled: true
   endpoint:
-    loggers:
+    health:
       enabled: true
+      probes:
+        enabled: true
+      show-details: always
     info:
       enabled: true
+    loggers:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include:
+        - health
+        - info
+        - loggers
+        - metrics
+        - prometheus
 
 logging:
   level:
