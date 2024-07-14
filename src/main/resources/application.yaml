@@ -3,6 +3,17 @@ spring:
     name: csrf-reactive
   main:
     banner-mode: off
+    web-application-type: reactive
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/my-realm
+
+server:
+  shutdown: graceful
 
 management:
   endpoint:
