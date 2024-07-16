@@ -42,7 +42,7 @@ class CsrfReactiveControllerSecureTest {
         .uri("/csrf/test-post")
         .exchange()
         .expectStatus()
-        .isOk();
+        .isUnauthorized();
   }
 
   @Test
