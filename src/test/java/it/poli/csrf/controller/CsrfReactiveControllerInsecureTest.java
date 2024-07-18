@@ -21,7 +21,7 @@ class CsrfReactiveControllerInsecureTest {
   @Autowired(required = false)
   private WebTestClient webClient;
 
-  @MockBean ReactiveJwtDecoder reactiveJwtDecoder;
+  @MockBean ReactiveJwtDecoder jwtDecoder;
 
   @Test
   final void testInjection() {
