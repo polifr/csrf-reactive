@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 public abstract class CsrfReactiveApplicationCommonTests {
@@ -54,6 +56,11 @@ public abstract class CsrfReactiveApplicationCommonTests {
 
   @Test
   final void testLogsGetLoggers() {
+    LoggerLevelsDescriptorModel loggerLevelsDescriptor = this.getLoggerLevelsDescriptor("it.poli");
+    assertNotNull(loggerLevelsDescriptor.getConfiguredLevel(), "null configuredLevel");
+  }
+
+  protected LoggerLevelsDescriptorModel getLoggerLevelsDescriptor(String logger) {
     LoggersDescriptorModel loggersDescriptor =
         webClient
             .get()
@@ -66,9 +73,32 @@ public abstract class CsrfReactiveApplicationCommonTests {
             .getResponseBody();
     assertNotNull(loggersDescriptor, "null loggersDescriptor");
     assertNotNull(loggersDescriptor.getLoggers(), "null loggers");
-    LoggerLevelsDescriptorModel loggerLevelsDescriptor =
-        loggersDescriptor.getLoggers().get("it.poli");
+    LoggerLevelsDescriptorModel loggerLevelsDescriptor = loggersDescriptor.getLoggers().get(logger);
     assertNotNull(loggerLevelsDescriptor, "null loggerLevelsDescriptor");
-    assertNotNull(loggerLevelsDescriptor.getConfiguredLevel(), "null configuredLevel");
+
+    return loggerLevelsDescriptor;
+  }
+
+  protected void setLoggerLevel(String logger, String level) {
+    webClient
+        .post()
+        .uri("/actuator/loggers/{logger}", logger)
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(LoggerLevelsDescriptorModel.builder().configuredLevel(level).build())
+        .exchange()
+        .expectStatus()
+        .is2xxSuccessful();
+  }
+
+  protected void setLoggerLevelWithCsrf(String logger, String level) {
+    webClient
+        .mutateWith(SecurityMockServerConfigurers.csrf())
+        .post()
+        .uri("/actuator/loggers/{logger}", logger)
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(LoggerLevelsDescriptorModel.builder().configuredLevel(level).build())
+        .exchange()
+        .expectStatus()
+        .is2xxSuccessful();
   }
 }
