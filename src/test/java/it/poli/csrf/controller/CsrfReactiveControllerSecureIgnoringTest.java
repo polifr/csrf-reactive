@@ -2,7 +2,7 @@ package it.poli.csrf.controller;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import it.poli.csrf.configuration.CsrfIgnoringSecurityConfiguration;
+import it.poli.csrf.configuration.CsrfSecurityConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -15,9 +15,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @WebFluxTest(controllers = CsrfReactiveController.class)
-@ActiveProfiles(profiles = {"secure-ignoring"})
-@Import({CsrfIgnoringSecurityConfiguration.class})
-class CsrfReactiveControllerSecureTest {
+@ActiveProfiles(profiles = {"secure"})
+@Import({CsrfSecurityConfiguration.class})
+class CsrfReactiveControllerSecureIgnoringTest {
 
   @Autowired(required = false)
   private WebTestClient webClient;

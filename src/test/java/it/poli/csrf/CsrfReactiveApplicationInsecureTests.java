@@ -21,7 +21,7 @@ class CsrfReactiveApplicationInsecureTests extends CsrfReactiveApplicationCommon
   @ParameterizedTest
   @ValueSource(strings = {"TRACE", "DEBUG", "INFO", "WARN", "ERROR", "OFF"})
   final void testSetLoggerLevel(String level) {
-    this.setLoggerLevel("it.poli", level);
+    this.setLoggerLevel("it.poli", level).expectStatus().is2xxSuccessful();
     LoggerLevelsDescriptorModel loggerLevelsDescriptor = this.getLoggerLevelsDescriptor("it.poli");
     assertNotNull(loggerLevelsDescriptor, "null loggerLevelsDescriptor");
     assertEquals(level, loggerLevelsDescriptor.getConfiguredLevel(), "incongruent logger lever");

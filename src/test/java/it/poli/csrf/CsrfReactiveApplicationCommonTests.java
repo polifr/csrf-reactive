@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
 public abstract class CsrfReactiveApplicationCommonTests {
 
@@ -79,26 +80,22 @@ public abstract class CsrfReactiveApplicationCommonTests {
     return loggerLevelsDescriptor;
   }
 
-  protected void setLoggerLevel(String logger, String level) {
-    webClient
+  protected ResponseSpec setLoggerLevel(String logger, String level) {
+    return webClient
         .post()
         .uri("/actuator/loggers/{logger}", logger)
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(LoggerLevelsDescriptorModel.builder().configuredLevel(level).build())
-        .exchange()
-        .expectStatus()
-        .is2xxSuccessful();
+        .exchange();
   }
 
-  protected void setLoggerLevelWithCsrf(String logger, String level) {
-    webClient
+  protected ResponseSpec setLoggerLevelWithCsrf(String logger, String level) {
+    return webClient
         .mutateWith(SecurityMockServerConfigurers.csrf())
         .post()
         .uri("/actuator/loggers/{logger}", logger)
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(LoggerLevelsDescriptorModel.builder().configuredLevel(level).build())
-        .exchange()
-        .expectStatus()
-        .is2xxSuccessful();
+        .exchange();
   }
 }
