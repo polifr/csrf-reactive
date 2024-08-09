@@ -23,5 +23,5 @@ jobs:
     - name: Surefire Report
       uses: ScaCap/action-surefire-report@v1.8.0
       if: success() || failure() # always run even if the previous step fails
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@v4.1.1
+#    - name: Update dependency graph
+#      uses: advanced-security/maven-dependency-submission-action@v4.1.1
