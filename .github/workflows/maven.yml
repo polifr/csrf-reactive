@@ -31,5 +31,14 @@ jobs:
       with:
         include_passed: true
         report_paths: '**/surefire-reports/TEST-*.xml'
+    - name: Add coverage to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.6.1
+      with:
+        paths: |
+          ${{ github.workspace }}/**/jacoco/jacoco.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
 #    - name: Update dependency graph
 #      uses: advanced-security/maven-dependency-submission-action@v4.1.1
