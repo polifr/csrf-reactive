@@ -8,10 +8,11 @@ on:
 
 jobs:
   build:
+    name: Maven Build and Run Junit Tests
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4.1.7
+    - name: Checkout Code
+      uses: actions/checkout@v4.1.7
     - name: Set up JDK 17
       uses: actions/setup-java@v4.2.2
       with:
@@ -20,8 +21,8 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Surefire Report
-      uses: ScaCap/action-surefire-report@v1.8.0
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v4.3.1
       if: success() || failure() # always run even if the previous step fails
 #    - name: Update dependency graph
 #      uses: advanced-security/maven-dependency-submission-action@v4.1.1
