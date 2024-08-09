@@ -10,6 +10,10 @@ jobs:
   build:
     name: Maven Build and Run Junit Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4.1.7
